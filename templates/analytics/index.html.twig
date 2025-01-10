@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Аналитика{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' with {
+        'controller': controller,
+    } %}
+
+    <div class="container-fluid">
+        <div class="ajax-table pt-2">
+            {% include 'block/search_panel.html.twig' with {
+                'controller': controller,
+                'path': path(controller),
+                'csv_link': path(controller) ~ '_csv' ~ csv_link,
+                'table': table
+            } %}
+
+            {% include 'analytics/table.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}

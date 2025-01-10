@@ -1,0 +1,95 @@
+<div class="py-2">
+    <form action="" method="get" id="searchForm">
+        <div class="d-flex align-items-center mb-0">
+            <div class="is-left-col input-group input-group-flat me-2 w-50">
+                <input id='input-search' type="text" class="form-control"
+                       placeholder="Поиск" maxlength="10"
+                       autocomplete="off" name="search" value="{{ search|default(false) }}"/>
+                <span class="input-group-text">
+                    <a id="jsClearSearch" href="{{ path|default(false) ~ search_link|default(false) }}"
+                       class="link-secondary" title="Очистить Поиск">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </a>
+
+                    <a id="submitSearch" href="#" class="link-secondary ms-2" title="Поиск">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <circle cx="10" cy="10" r="7"/>
+                            <line x1="21" y1="21" x2="15" y2="15"/>
+                        </svg>
+                    </a>
+                    <a id="submitExtendedSearch" class="link-secondary ms-2" title="Расширенный поиск"
+                       data-bs-toggle="offcanvas" href="#extendedSearchPanel" role="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list-search"
+                                 width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50"
+                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <circle cx="15" cy="15" r="4"/>
+                                <path d="M18.5 18.5l2.5 2.5"/>
+                                <path d="M4 6h16"/>
+                                <path d="M4 12h4"/>
+                                <path d="M4 18h4"/>
+                            </svg>
+                        </a>
+                </span>
+            </div>
+
+            <div class="me-2">
+                <a href="{{ csv_link|default('#') }}" class="btn w-100 btn-icon" title="Экспорт в Excel"
+                   data-toggle="tooltip" data-action="csv">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-table-export"
+                         width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M11.5 20h-5.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v7.5m-16 -3.5h16m-10 -6v16m4 -1h7m-3 -3l3 3l-3 3"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="ms-auto d-flex align-items-center">
+                {% block hidePager %}
+                <div>По</div>
+                <select
+                        class="form-select ms-2"
+                        id="on_page_selector"
+                        data-path="{{ onpage_link|default(false) }}"
+                        {% if search|default(false) %}
+                            data-search="{{ search }}"
+                        {% endif %}
+                        {% if extended_search|default(false) %}
+                            data-extended-search="{{ extended_search }}"
+                        {% endif %}
+                        {% if select_type|default(false) %}
+                            data-type="{{ select_type }}"
+                        {% endif %}
+                >
+                    <option value="5" {% if pager.on_page|default(false) and pager.on_page == 5 %}selected{% endif %}>
+                        5
+                    </option>
+                    <option value="10" {% if pager.on_page|default(false) and pager.on_page == 10 %}selected{% endif %}>
+                        10
+                    </option>
+                    <option value="25"
+                            {% if pager.on_page|default(false) == false or pager.on_page|default(false) and pager.on_page == 25 %}selected{% endif %}>
+                        25
+                    </option>
+                    <option value="50" {% if pager.on_page|default(false) and pager.on_page == 50 %}selected{% endif %}>
+                        50
+                    </option>
+                    <option value="100"
+                            {% if pager.on_page|default(false) and pager.on_page == 100 %}selected{% endif %}>100
+                    </option>
+                </select>
+                {% endblock %}
+            </div>
+        </div>
+    </form>
+</div>

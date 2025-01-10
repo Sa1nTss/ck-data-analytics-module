@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Обработка файлов{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' with {
+        'controller': controller,
+    } %}
+
+    <div class="container-fluid">
+        <h1>Загрузка Excel-файла</h1>
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+        <form class="form w-50 exel-form ajax-form" action="{{ path('upload_excel') }}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="excel_file">Выберите файл:</label>
+                <input class="form-control" type="file" id="file" name="file" accept=".xls,.xlsx" required>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Загрузить</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
