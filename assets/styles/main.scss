@@ -1,0 +1,13 @@
+body {
+  background-color: #f6f8fb;
+}
+
+.navbar-expand-md .nav-item.active:after {
+  content: "";
+  position: relative;
+  left: 0;
+  right: 0;
+  bottom: -.25rem;
+  border: 0;
+  border-bottom: solid 2px #066fd1;
+}

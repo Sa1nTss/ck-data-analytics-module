@@ -1,0 +1,79 @@
+<div class="">
+    <table class="table card-table">
+        <thead>
+        <tr>
+            {% if table|default(false) %}
+                {% for tbl in table %}
+                    {% if tbl['show'] == true %}
+                        {% if tbl['header'] == '' %}
+                            <th></th>
+                        {% else %}
+                            <th data-dragdrop-value="{{ tbl.name }}">
+                                <div class="th-name">
+                                    <div class="sort-name-wrap">
+                                        <span class="name-text">{{ tbl['header'] }}</span>
+                                    </div>
+                                    <div class="filter-sort-wrap">
+                                        {% if tbl['sort'] == true %}
+                                            <a title="Сортировка по значению ({{ tbl['header'] }})"
+                                               class="sort-icon is-{% if sort.current_sort|default(false) and sort.current_sort == tbl['name'] %}desc{% elseif sort.current_sort|default(false) and sort.current_sort == (tbl['name']~'__up') %}asc{% else %}both{% endif %}"
+                                               href="{{ path(controller) ~ sort.sort_link ~ tbl['name'] }}{% if sort.current_sort|default(false) and sort.current_sort == tbl['name'] %}__up{% endif %}"
+                                            ></a>
+                                        {% endif %}
+                                        {% if tbl['filter'] == true %}
+                                            {% include 'block/block_filter.html.twig' with {
+                                                'columnIndex': loop.index,
+                                                'columnHeader': tbl['header'],
+                                                'columnName': tbl['name'],
+                                                'columnType': tbl['type'],
+                                            } %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </th>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </tr>
+
+        </thead>
+        <tbody>
+        {% if data|default(false) %}
+            {% for dat in data %}
+                <tr data-string="{{ dat.id }}" data-type="{{ controller }}"
+                    class="user-table-row {% if loop.first %}is-selected{% endif %}" tabindex="0">
+                    {% for tbl in table %}
+                        {% if tbl['show'] == true %}
+                            {% if tbl.type == 'bool' %}
+                                <td><span class="badge {% if dat[tbl.name]|default(false) %} bg-success {% else %} bg-danger {% endif %} "></span>
+                                </td>
+                            {% elseif tbl.type == 'date' %}
+                                <td>
+                                    {% if dat[tbl.name]|default(false) %}
+                                        {{ dat[tbl.name]|date("d.m.Y") }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            {% elseif tbl.type == 'int' %}
+                                <td>{{ dat[tbl.name]|default(false)|raw }} </td>
+                            {% elseif tbl.type == 'img' %}
+                                <td>
+                                    {% if dat[tbl.name]|default(false) %}
+                                        <img height="50" src="{{ dat[tbl.name]|default(false) }}">
+                                    {% endif %}
+                                </td>
+                            {% else %}
+                                <td>
+                                    <span title='{{ dat[tbl.name]|default('-')|raw }}' data-bs-toggle="tooltip" data-bs-placement="left">{{ dat[tbl.name]|default('-')|raw}}</span>
+                                </td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
