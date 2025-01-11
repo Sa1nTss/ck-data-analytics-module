@@ -42,6 +42,7 @@ class AnalyticsController extends BaseController
         $search = $this->request->get('search');
 
         $result = $this->doctrine->getRepository(Education::class)->getList($filters, $search);
+
         $count = $this->doctrine->getRepository(Education::class)->getCount($filters);
 
         return [
@@ -53,7 +54,6 @@ class AnalyticsController extends BaseController
                 'paginator_link' => $this->getParinatorLink(),
                 'on_page' => $filters['on_page'],
             ],
-
             'sort' => [
                 'sort_link' => $this->getSortLink(),
                 'current_sort' => $this->request->get('sort') ?? null,
@@ -68,29 +68,75 @@ class AnalyticsController extends BaseController
     {
         return [
             [
-                'name' => 'id',
+                'name' => 'student',
                 'header' => 'ID',
-                'type' => 'int',
+                'type' => 'join',
+                'join' => 'inopolis_id',
                 'filter' => true,
                 'show' => true,
                 'sort' => true,
             ],
             [
-                'name' => 'status',
-                'header' => 'Статус',
+                'name' => 'student',
+                'header' => 'ФИО',
+                'type' => 'join',
+                'join' => 'fio',
+                'filter' => true,
+                'show' => true,
+                'sort' => true,
+            ],
+            [
+                'name' => 'flow',
+                'header' => 'Поток',
                 'type' => 'string',
                 'filter' => true,
                 'show' => true,
                 'sort' => true,
             ],
             [
+                'name' => 'program',
+                'header' => 'Программа',
+                'type' => 'join',
+                'join' => 'name',
+                'filter' => true,
+                'show' => true,
+                'sort' => true,
+            ],
+            [
+                'name' => 'direction',
+                'header' => 'Направление',
+                'type' => 'join',
+                'join' => 'name',
+                'filter' => true,
+                'show' => true,
+                'sort' => true,
+            ],
+            [
+                'name' => 'competence',
+                'header' => 'Компентенция',
+                'type' => 'join',
+                'join' => 'name',
+                'filter' => true,
+                'show' => true,
+                'sort' => true,
+            ],
+            [
+                'name' => 'student',
+                'header' => 'Статус',
+                'type' => 'join',
+                'join' => 'status',
+                'filter' => true,
+                'show' => true,
+                'sort' => true,
+            ],
+            /*[
                 'name' => 'date',
                 'header' => 'Дата начала прохождения оценки',
                 'type' => 'date',
                 'filter' => true,
                 'show' => true,
                 'sort' => true,
-            ],
+            ],*/
         ];
     }
 

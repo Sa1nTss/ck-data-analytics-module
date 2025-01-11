@@ -64,6 +64,14 @@
                                         <img height="50" src="{{ dat[tbl.name]|default(false) }}">
                                     {% endif %}
                                 </td>
+                            {% elseif tbl.type == 'join' %}
+                                <td>
+                                    {% if dat[tbl.name][tbl.join]|default('-')|length > 25 %}
+                                        <span title='{{ dat[tbl.name][tbl.join]|default('-')|raw }}' data-bs-toggle="tooltip" data-bs-placement="top">{{ dat[tbl.name][tbl.join]|default('-')|raw|slice(0, 25) }}...</span>
+                                    {% else %}
+                                        <span title='{{ dat[tbl.name][tbl.join]|default('-')|raw }}' data-bs-toggle="tooltip" data-bs-placement="top">{{ dat[tbl.name][tbl.join]|default('-')|raw }}</span>
+                                    {% endif %}
+                                </td>
                             {% else %}
                                 <td>
                                     <span title='{{ dat[tbl.name]|default('-')|raw }}' data-bs-toggle="tooltip" data-bs-placement="top">{{ dat[tbl.name]|default('-')|raw}}</span>

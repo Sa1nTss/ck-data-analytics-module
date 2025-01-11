@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     setPaginationListeners();
     initTooltips();
     setSortListeners();
+    rowsClicker();
+    setOnPageListener();
 });
 
 function initAjaxForms() {
@@ -110,6 +112,7 @@ async function getTableData(tableUrl, table = null, selectRowId = null) {
     }
 
     setPaginationListeners();
+    setSortListeners();
 
 
     let url;
@@ -182,4 +185,81 @@ function setSortListeners() {
             sortIcon.addEventListener("click", sortClicker);
         });
     }
+}
+
+function rowsClicker() {
+    let table = document.querySelector('.users-table');
+
+    table.addEventListener('click', function (evt) {
+        if (evt.target.closest('.user-table-row')) {
+            let currentSelectedRow = table.querySelector('.user-table-row.is-selected');
+            currentSelectedRow.classList.remove('is-selected');
+
+            let el = evt.target.closest('.user-table-row');
+            if (!el.classList.contains('is-selected')) {
+                el.classList.add('is-selected')
+            }
+        }
+    });
+}
+
+function setOnPageListener() {
+    let selectOnPage = document.querySelector("#on_page_selector");
+    let table = document.querySelector('.users-table');
+
+    if (selectOnPage !== null) {
+        let sectionName = document.querySelector("#on_page_selector").getAttribute("data-path");
+
+        let dataType = document.querySelector("#on_page_selector").getAttribute("data-type");
+        if (table) {
+            table.getData = async () => {
+                return getTableData(getTableUrl(selectOnPage.dataset.path), null);
+            };
+        }
+    }
+
+    let getTableUrl = function (sectionName, cleanParams = false) {
+        let urlParams = cleanParams ? new URLSearchParams()
+            : new URLSearchParams(window.location.search);
+        let tableUrl = '';
+        urlParams.set('ajax', true);
+        if (sectionName !== null) {
+            tableUrl = `${location.protocol}//${location.host}${sectionName}?${urlParams.toString()}`;
+        }
+        return tableUrl;
+    };
+
+    selectOnPage.addEventListener("change", function () {
+        let selectValue = selectOnPage.value;
+
+        let sectionName = document.querySelector("#on_page_selector").getAttribute("data-path");
+        let dataSearch = document.querySelector("#on_page_selector").getAttribute("data-search");
+        let dataExtendedSearch = document.querySelector("#on_page_selector").getAttribute("data-extended-search");
+
+        let dataType = document.querySelector("#on_page_selector").getAttribute("data-type");
+
+        let params = new URLSearchParams(window.location.search);
+        params.set('on_page', selectValue);
+        params.set('ajax', true);
+        // удаляем значение пагинации, чтобы не получилось так, что выбрана страница которой не существует при текущем on_page
+        params.delete('page');
+        //let tableUrl = `${location.protocol}//${location.host}${sectionName}?on_page=${selectValue}&ajax=true`;
+        if (dataSearch !== null) {
+            //tableUrl += '&search=' + dataSearch;
+            params.set('search', dataSearch);
+        }
+        if (dataExtendedSearch !== null) {
+            //tableUrl += '&' + dataExtendedSearch;
+            params.set('', dataExtendedSearch);
+        }
+        if (dataType !== null) {
+            //tableUrl += '&type=' + dataType;
+            params.set('type', dataType);
+        }
+
+        let tableUrl = `${location.protocol}//${location.host}${sectionName}?${params.toString()}`;
+        getTableData(tableUrl).then(r => {
+            // getDataFilter();
+        });
+    });
 }

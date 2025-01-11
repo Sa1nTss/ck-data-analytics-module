@@ -135,3 +135,8 @@ body {
     padding: 0.5rem;
   }
 }
+
+.user-table-row.is-selected,
+.editable-table-row.is-selected {
+  background-color: rgba(32, 107, 196, 0.25);
+}
