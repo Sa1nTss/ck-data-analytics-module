@@ -8,7 +8,7 @@
     } %}
 
     <div class="container-fluid">
-        <div class="ajax-table pt-2">
+        <div class="card mt-2">
             {% include 'block/search_panel.html.twig' with {
                 'controller': controller,
                 'path': path(controller),
@@ -16,7 +16,9 @@
                 'table': table
             } %}
 
-            {% include 'analytics/table.html.twig' %}
+            <div class="ajax-table">
+                {% include 'analytics/table.html.twig' %}
+            </div>
         </div>
     </div>
 
