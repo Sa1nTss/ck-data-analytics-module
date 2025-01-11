@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FileProcessController extends BaseController
 {
     public string $controller = 'file_process';
+
     public function __construct(ManagerRegistry $doctrine, private readonly ExcelProcessor $excelProcessor)
     {
         parent::__construct($doctrine);
@@ -27,10 +28,10 @@ class FileProcessController extends BaseController
             return $auth;
         }
 
-        return $this->render('file_process/index.html.twig', compact([
-            'auth',
+        return $this->render('file_process/index.html.twig', [
+            'auth' => $auth,
             'controller' => $this->controller,
-        ]));
+        ]);
     }
 
     #[Route('/upload_excel', name: 'upload_excel')]

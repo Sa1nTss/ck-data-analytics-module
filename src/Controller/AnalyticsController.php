@@ -36,13 +36,13 @@ class AnalyticsController extends BaseController
         $filters = [
             'page' => $this->request->get('page') ?? null,
             'on_page' => $this->request->get('on_page') ?? 25,
-            'sort' => !empty($this->request->get('sort')) ?: 'id',
+            'sort' => !empty($this->request->get('sort')) ? $this->request->get('sort') : 'id',
             'filter' => $this->request->get('filter') ?? null,
         ];
         $search = $this->request->get('search');
 
         $result = $this->doctrine->getRepository(Education::class)->getList($filters, $search);
-        $count = count($result);
+        $count = $this->doctrine->getRepository(Education::class)->getCount($filters);
 
         return [
             'data' => $result,
@@ -79,6 +79,14 @@ class AnalyticsController extends BaseController
                 'name' => 'status',
                 'header' => 'Статус',
                 'type' => 'string',
+                'filter' => true,
+                'show' => true,
+                'sort' => true,
+            ],
+            [
+                'name' => 'date',
+                'header' => 'Дата начала прохождения оценки',
+                'type' => 'date',
                 'filter' => true,
                 'show' => true,
                 'sort' => true,

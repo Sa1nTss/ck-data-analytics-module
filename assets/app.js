@@ -6,10 +6,12 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
+import 'bootstrap';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'tabler/dist/js/tabler';
-import 'tabler/dist/css/tabler.css';
+import '@tabler/core';
+import '@tabler/core/dist/css/tabler.css';
+import '@tabler/core/dist/js/tabler';
 
 import './styles/app.css';
 import './styles/main.scss';

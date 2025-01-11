@@ -11,3 +11,127 @@ body {
   border: 0;
   border-bottom: solid 2px #066fd1;
 }
+
+.users-table th .sort-icon {
+  width: 12px;
+  height: 11px;
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 30;
+  margin-right: 3px;
+}
+
+.users-option-panel .is-left-col {
+  max-width: 650px;
+}
+
+.users-table-wrap {
+  max-height: calc(100vh - 280px);
+  min-height: 300px;
+  position: relative;
+}
+
+.users-table .hidden-cell {
+  display: none;
+}
+
+.users-table th .sort-icon.is-both {
+  background-image: url('/assets/source/img/icon/arrow.png');
+}
+
+.users-table th .sort-icon.is-desc {
+  background-image: url('/assets/source/img/icon/arrow_down.svg');
+}
+
+.users-table th .sort-icon.is-asc {
+  background-image: url('/assets/source/img/icon/arrow_up.svg');
+}
+
+.filter-sort-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.name-text {
+  margin-right: 10px;
+  padding-top: 3px;
+}
+
+.th-name {
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.sort-name-wrap {
+  display: flex;
+}
+
+.card-table tr td:first-child,
+.card-table tr th:first-child {
+  padding-left: 1rem;
+}
+
+.id-name {
+  margin-left: 7px;
+}
+
+.table-filter-btn {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  pointer-events: all;
+  position: relative !important;
+}
+
+.settings-dropdown {
+  .icon {
+    margin: 0;
+  }
+}
+
+#columns-settings-btn {
+  padding: 0.4375rem 0.5rem;
+}
+
+.search-dropdown {
+  width: 350px;
+  padding: 15px 15px 0 15px;
+}
+
+.filter-modal-title {
+  text-transform: initial;
+}
+
+.filter-date-modal {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flatpickr-wrap {
+  display: flex;
+
+  .flatpickr-input:focus,
+  .flatpickr-input:hover {
+    box-shadow: none;
+    border-color: #e6e7e9;
+  }
+
+  .flatpickr-input:focus:not([disabled]):not(.disabled) {
+    border-color: #e6e7e9;
+  }
+
+  .btn {
+    outline: none;
+    //  border: none;
+    box-shadow: none;
+    background-color: transparent;
+    padding: 0.5rem;
+  }
+}

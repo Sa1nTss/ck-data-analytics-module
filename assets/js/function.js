@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     exelFormAlert();
+    setPaginationListeners();
+    initTooltips();
+    setSortListeners();
 });
 
 function initAjaxForms() {
@@ -54,6 +57,129 @@ function exelFormAlert() {
         });
         form.addEventListener('error_send', function () {
             alert('В результате обработки возникла ошибка!');
+        });
+    }
+}
+
+function setPaginationListeners() {
+    let paginationLinks = document.querySelectorAll(".page-link");
+
+    if (paginationLinks) {
+        paginationLinks.forEach((paginationLink) => {
+            paginationLink.addEventListener("click", paginationClicker);
+        });
+    }
+}
+
+function paginationClicker(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.cancelBubble = true;
+    let paginationLinkData = this.getAttribute("href");
+    let tableUrl = '';
+    if (paginationLinkData.includes("ajax=true")) {
+        tableUrl = paginationLinkData;
+    } else {
+        tableUrl = `${paginationLinkData}&ajax=true`;
+    }
+    getTableData(tableUrl).then(res => {
+        // getDataFilter();
+    });
+}
+
+async function getTableData(tableUrl, table = null, selectRowId = null) {
+    let result = await fetch(tableUrl).then((result) => result);
+    let data = await result.text();
+    const ajaxTable = document.querySelector(".ajax-table");
+
+    let selectedBefore = null;
+    if (table) {
+        selectedBefore = table.querySelector('.user-table-row.is-selected');
+        let tableSortIcons = table.querySelectorAll(".sort-icon"),
+            tablePaginationLinks = table.querySelectorAll(".page-link");
+
+        clearOldListeners(tableSortIcons, tablePaginationLinks, true);
+        table.innerHTML = data;
+    }
+
+    // иначе если верхняя
+    else if (ajaxTable) {
+        selectedBefore = ajaxTable.querySelector('.user-table-row.is-selected');
+        clearOldListeners();
+        ajaxTable.innerHTML = data;
+    }
+
+    setPaginationListeners();
+
+
+    let url;
+    try {
+        url = new URL(tableUrl);
+    } catch (e) {
+        url = new URL(`${location.protocol}//${location.host}${tableUrl}`);
+    }
+    url.searchParams.delete('ajax');
+    history.pushState("", "", url);
+
+    document.dispatchEvent(new CustomEvent('getTableData_loaded', {
+        detail: {
+            table: ajaxTable,
+            selectedBefore: selectedBefore,
+            selectRowId: selectRowId,
+        }
+    }));
+}
+
+function clearOldListeners(tableSortIcons, tablePaginationLinks, skipAllRows) {
+    let sortIcons = document.querySelectorAll(".sort-icon");
+    let paginationLinks = document.querySelectorAll(".page-link");
+    if (tableSortIcons || sortIcons) {
+        (tableSortIcons && tableSortIcons.length ? tableSortIcons : sortIcons).forEach((sortIcon) => {
+            sortIcon.removeEventListener("click", sortClicker);
+        });
+    }
+    if (tablePaginationLinks || paginationLinks) {
+        (tablePaginationLinks && tablePaginationLinks.length ? tablePaginationLinks : paginationLinks).forEach((paginationLink) => {
+            paginationLink.removeEventListener("click", paginationClicker);
+        });
+    }
+}
+
+function initTooltips(stepClassSelector = null) {
+    let tooltipTriggerList;
+    if (stepClassSelector !== null) {
+        tooltipTriggerList = [].slice.call(document.querySelectorAll(`${stepClassSelector} [data-bs-toggle="tooltip"]`));
+    } else {
+        tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    }
+    if (tooltipTriggerList !== null && tooltipTriggerList !== undefined) {
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return bootstrap.Tooltip.getOrCreateInstance(tooltipTriggerEl);
+        });
+    }
+}
+
+function sortClicker(event) {
+    event.preventDefault();
+    let hrefData = this.getAttribute("href"),
+        hrefDataArr = hrefData.split("&"),
+        tableUrl = '',
+        table = this.closest('#step_data');
+    if (hrefDataArr.includes("ajax=true")) {
+        tableUrl = hrefData;
+    } else {
+        tableUrl = `${hrefData}&ajax=true`;
+    }
+    getTableData(tableUrl, table).then(r => {
+        // getDataFilter();
+    });
+}
+
+function setSortListeners() {
+    let sortIcons = document.querySelectorAll(".sort-icon");
+    if (sortIcons) {
+        sortIcons.forEach((sortIcon) => {
+            sortIcon.addEventListener("click", sortClicker);
         });
     }
 }

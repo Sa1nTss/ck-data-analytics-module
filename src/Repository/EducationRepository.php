@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Education;
+use App\Entity\Student;
 use App\Service\QueryHelperService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,6 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class EducationRepository extends ServiceEntityRepository
 {
     private string $prefix = 'education';
+
     public function __construct(ManagerRegistry $registry, private readonly QueryHelperService $queryHelperService)
     {
         parent::__construct($registry, Education::class);
@@ -49,6 +51,16 @@ class EducationRepository extends ServiceEntityRepository
             $this->queryHelperService->getDefaultSort($filters['sort'] ?? null, $this->prefix),
         );
 
+        $qb->leftJoin($this->prefix.Student::class, 'student');
+
         return $qb->getQuery()->getArrayResult();
+    }
+
+    public function getCount(array $filters): int
+    {
+        $qb = $this->createQueryBuilder($this->prefix);
+        $this->queryHelperService->setCountQuery($qb, $this->prefix);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 }

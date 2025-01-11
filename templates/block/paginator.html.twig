@@ -1,0 +1,81 @@
+<div class="card-footer d-flex align-items-center">
+    <p class="m-0 text-muted">Всего результатов: <b id="table_rows_number">{{ pager.count_all_position }}</b></p>
+    <div class="spacer flex-grow-1"></div>
+    {% if pager.count_page|default(false) and pager.count_page > 1 %}
+        <ul class="pagination m-0">
+            <li class="page-item">
+                <a class="page-link" href="{{ path ~ pager.paginator_link ~ '1' }}" tabindex="-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                         height="24" viewBox="0 0 24 24" stroke-width="2"
+                         stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <polyline points="15 6 9 12 15 18"/>
+                    </svg>
+                </a>
+            </li>
+
+            {% if pager.count_page > 8 %}
+                {% set start = 1 %}
+                {% if pager.current_page|default(false) %}
+                    {% set start = pager.current_page %}
+                {% endif %}
+                {% if start > 1 %}
+                    {% set start = start - 1 %}
+                {% endif %}
+                {% if pager.current_page > (pager.count_page - 5) %}
+                    {% set start = pager.count_page - 5 %}
+                {% endif %}
+
+                {% for page in start..pager.count_page %}
+                    {% if loop.index < 8 %}
+                        <li class="page-item {% if (page == pager.current_page) or (page == 1 and pager.current_page|default(false) == false) %}active{% endif %}">
+                            <a class="page-link" href="{{ path ~ pager.paginator_link ~ page }}">
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for page in 1..pager.count_page %}
+                    {% if page == pager.current_page %}
+                        <li class="page-item active">
+                            <a data-ajax="{{ path ~ pager.paginator_link ~ page }}&ajax=true" class="page-link" href="{{ path ~ pager.paginator_link ~ page }}">
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path ~ pager.paginator_link ~ page }}">
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <li class="page-item">
+                <a class="page-link" href="{{ path ~ pager.paginator_link ~ pager.count_page }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                         height="24" viewBox="0 0 24 24" stroke-width="2"
+                         stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <polyline points="9 6 15 12 9 18"/>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+    {% if display_collapser|default(false) %}
+        <div class="table-collapser" title="Свернуть" data-bs-toggle="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-up-circle" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <circle cx="12" cy="12" r="9" />
+                <line x1="12" y1="8" x2="8" y2="12" />
+                <line x1="12" y1="8" x2="12" y2="16" />
+                <line x1="16" y1="12" x2="12" y2="8" />
+            </svg>
+        </div>
+    {% endif %}
+</div>

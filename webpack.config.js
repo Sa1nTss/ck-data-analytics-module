@@ -73,9 +73,6 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-    .addAliases({
-        tabler: path.resolve(__dirname, 'node_modules/tabler'),
-    })
 ;
 
 module.exports = Encore.getWebpackConfig();
