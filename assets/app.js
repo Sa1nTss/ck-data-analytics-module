@@ -7,7 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import 'bootstrap';
-import 'bootstrap/dist/js/bootstrap';
+// import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@tabler/core';
 import '@tabler/core/dist/css/tabler.css';
@@ -19,3 +19,5 @@ import './styles/main.scss';
 // start the Stimulus application
 import './bootstrap';
 import './js/function';
+import './js/aside-panel'
+

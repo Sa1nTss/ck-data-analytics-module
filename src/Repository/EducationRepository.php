@@ -51,7 +51,10 @@ class EducationRepository extends ServiceEntityRepository
             $this->queryHelperService->getDefaultSort($filters['sort'] ?? null, $this->prefix),
         );
 
-        $qb->leftJoin($this->prefix.Student::class, 'student');
+        $qb->leftJoin($this->prefix.'.student', 'student')->addSelect('student');
+        $qb->leftJoin($this->prefix.'.competence', 'competence')->addSelect('competence');
+        $qb->leftJoin($this->prefix.'.direction', 'direction')->addSelect('direction');
+        $qb->leftJoin($this->prefix.'.program', 'program')->addSelect('program');
 
         return $qb->getQuery()->getArrayResult();
     }

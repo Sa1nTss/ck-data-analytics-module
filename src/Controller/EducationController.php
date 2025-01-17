@@ -8,13 +8,14 @@ use App\Service\LinkService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AnalyticsController extends BaseController
+class EducationController extends BaseController
 {
     use AuthService;
     use LinkService;
-    public string $controller = 'analytics';
+    public string $controller = 'education';
 
-    #[Route('/analytics', name: 'analytics')]
+    #[Route('/data', name: 'data')]
+    #[Route('/data/education', name: 'education')]
     public function index(): Response
     {
         $auth = $this->getAuthValue($this->getUser(), 'auth_main', $this->managerRegistry);
@@ -22,7 +23,7 @@ class AnalyticsController extends BaseController
             return $auth;
         }
 
-        $tpl = $this->request->get('ajax') ? 'analytics/table.html.twig' : 'analytics/index.html.twig';
+        $tpl = $this->request->get('ajax') ? 'data/education/table.html.twig' : 'data/education/index.html.twig';
         $result = $this->get();
         $result['auth'] = $auth;
 
@@ -139,5 +140,4 @@ class AnalyticsController extends BaseController
             ],*/
         ];
     }
-
 }

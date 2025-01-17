@@ -60,7 +60,7 @@
                 <select
                         class="form-select ms-2"
                         id="on_page_selector"
-                        data-path="{{ onpage_link|default(false) }}"
+                        data-path="{{ path(controller) }}"
                         {% if search|default(false) %}
                             data-search="{{ search }}"
                         {% endif %}
