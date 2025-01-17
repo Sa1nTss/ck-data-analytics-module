@@ -189,6 +189,9 @@ function setSortListeners() {
 
 function rowsClicker() {
     let table = document.querySelector('.users-table');
+    if (!table) {
+        return;
+    }
 
     table.addEventListener('click', function (evt) {
         if (evt.target.closest('.user-table-row')) {
@@ -206,6 +209,10 @@ function rowsClicker() {
 function setOnPageListener() {
     let selectOnPage = document.querySelector("#on_page_selector");
     let table = document.querySelector('.users-table');
+
+    if (!table) {
+        return;
+    }
 
     if (selectOnPage !== null) {
         let sectionName = document.querySelector("#on_page_selector").getAttribute("data-path");

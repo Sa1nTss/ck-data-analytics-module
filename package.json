@@ -24,6 +24,7 @@
     "dependencies": {
         "@tabler/core": "^1.0.0-beta21",
         "bootstrap": "^5.3.3",
+        "js-cookie": "^3.0.5",
         "slim-select": "^2.10.0"
     }
 }

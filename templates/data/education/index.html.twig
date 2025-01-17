@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Обучение{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' with {
+        'controller': controller,
+    } %}
+
+    <div class="page page-layout">
+        {% include 'data/block/aside_panel.html.twig' with {'controller': controller} %}
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="container-fluid">
+
+                    <div class="card mt-2">
+                        {% include 'block/search_panel.html.twig' with {
+                            'controller': controller,
+                            'path': path(controller),
+                            'csv_link': path(controller) ~ '_csv' ~ csv_link,
+                            'table': table
+                        } %}
+
+                        <div class="ajax-table">
+                            {% include 'data/education/table.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

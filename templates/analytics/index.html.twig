@@ -9,15 +9,12 @@
 
     <div class="container-fluid">
         <div class="card mt-2">
-            {% include 'block/search_panel.html.twig' with {
-                'controller': controller,
-                'path': path(controller),
-                'csv_link': path(controller) ~ '_csv' ~ csv_link,
-                'table': table
-            } %}
+            <div>
+                {% include 'analytics/part/control.html.twig' %}
+            </div>
 
-            <div class="ajax-table">
-                {% include 'analytics/table.html.twig' %}
+            <div class="analytics-table">
+                {% include 'analytics/part/table.html.twig' %}
             </div>
         </div>
     </div>
