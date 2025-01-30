@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Аналитика{% endblock %}
+
+{% block body %}
+    {% include 'header.html.twig' with {
+        'controller': controller,
+    } %}
+
+    <div class="page page-layout">
+        {% include 'analytics/block/aside_panel.html.twig' with {'controller': controller} %}
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="container-fluid">
+                    <div class="card mt-2 analytics-container">
+                        <div>
+                            {% include 'analytics/analytics/part/control.html.twig' %}
+                        </div>
+
+                        <div class="analytics-table">
+                            {% include 'analytics/analytics/part/table.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

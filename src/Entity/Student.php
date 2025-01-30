@@ -43,6 +43,18 @@ class Student
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $registration_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'student')]
+    private ?Group $student_group = null;
+
+    #[ORM\ManyToOne(inversedBy: 'student')]
+    private ?CKGroup $ck_group = null;
+
+    #[ORM\ManyToOne(inversedBy: 'student')]
+    private ?University $university = null;
+
+    #[ORM\ManyToOne(inversedBy: 'student')]
+    private ?Faculty $faculty = null;
+
     public function __construct()
     {
         $this->education = new ArrayCollection();
@@ -175,6 +187,54 @@ class Student
     public function setRegistrationDate(\DateTimeInterface $registration_date): static
     {
         $this->registration_date = $registration_date;
+
+        return $this;
+    }
+
+    public function getStudentGroup(): ?Group
+    {
+        return $this->student_group;
+    }
+
+    public function setStudentGroup(?Group $student_group): static
+    {
+        $this->student_group = $student_group;
+
+        return $this;
+    }
+
+    public function getCkGroup(): ?CKGroup
+    {
+        return $this->ck_group;
+    }
+
+    public function setCkGroup(?CKGroup $ck_group): static
+    {
+        $this->ck_group = $ck_group;
+
+        return $this;
+    }
+
+    public function getUniversity(): ?University
+    {
+        return $this->university;
+    }
+
+    public function setUniversity(?University $university): static
+    {
+        $this->university = $university;
+
+        return $this;
+    }
+
+    public function getFaculty(): ?Faculty
+    {
+        return $this->faculty;
+    }
+
+    public function setFaculty(?Faculty $faculty): static
+    {
+        $this->faculty = $faculty;
 
         return $this;
     }

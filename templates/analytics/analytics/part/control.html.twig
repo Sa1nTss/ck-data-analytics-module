@@ -2,8 +2,13 @@
     <div class="row">
         <div class="w-50">
             <label for="">Студент</label>
-            <select class="form-control" name="" id="">
+            <select class="" name="" id="student-select">
                 <option value="">Не выбрано</option>
+                {% if students|default(false) %}
+                    {% for student in students %}
+                        <option value="{{ student.id }}">{% if student.fio|trim|length != 0 %}{{ student.fio }}{% else %}-{% endif %}</option>
+                    {% endfor %}
+                {% endif %}
             </select>
         </div>
         <div class="w-50">

@@ -34,10 +34,18 @@ class FileProcessController extends BaseController
         ]);
     }
 
-    #[Route('/upload_excel', name: 'upload_excel')]
-    public function uploadExcel(): Response
+    #[Route('/upload_education_excel', name: 'upload_education_excel')]
+    public function uploadEducationExcel(): Response
     {
-        $result = $this->excelProcessor->processExcel($this->request->files->get('file'));
+        $result = $this->excelProcessor->processEducationExcel($this->request->files->get('file'));
+
+        return $this->json($result);
+    }
+
+    #[Route('/upload_faculty_excel', name: 'upload_faculty_excel')]
+    public function uploadFacultyExcel(): Response
+    {
+        $result = $this->excelProcessor->processFacultyExcel($this->request->files->get('file'));
 
         return $this->json($result);
     }

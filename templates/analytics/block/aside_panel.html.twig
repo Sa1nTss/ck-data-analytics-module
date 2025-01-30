@@ -1,0 +1,75 @@
+<aside class="aside-panel navbar navbar-vertical navbar-expand-lg navbar-light overflow-y-auto">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <ul class="navbar-nav pt-lg-3">
+                {% if auth.auth_main|default(false) %}
+                    <li class="nav-item dropdown directory-custom-dropdown">
+                        <a class="nav-link dropdown-toggle show" href="#navbar-layout" data-bs-toggle="dropdown"
+                           data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <span class="nav-link-items-container">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                                       stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                       stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                      <polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"/>
+                                      <line x1="12" y1="12" x2="20" y2="7.5"/>
+                                      <line x1="12" y1="12" x2="12" y2="21"/>
+                                      <line x1="12" y1="12" x2="4" y2="7.5"/>
+                                      <line x1="16" y1="5.25" x2="8" y2="9.75"/>
+                                  </svg>
+                                </span>
+                                <span class="nav-link-title">Аналитика</span>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu show">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item {% if controller|default(false) and controller == 'analytics' %}active{% endif %}"
+                                       href="{{ path('analytics') }}" title="Аналитика">
+                                       <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 class="icon icon-tabler icon-tabler-user-search" width="24" height="24"
+                                                 viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none"
+                                                 stroke-linecap="round" stroke-linejoin="round">
+                                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                               <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                               <path d="M6 21v-2a4 4 0 0 1 4 -4h1.5"></path>
+                                               <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                               <path d="M20.2 20.2l1.8 1.8"></path>
+                                            </svg>
+                                       </span>
+                                        <span class="nav-link-title">Аналитика</span>
+                                    </a>
+
+                                    <a class="dropdown-item {% if controller|default(false) and controller == 'statistics' %}active{% endif %}"
+                                       href="{{ path('statistics') }}" title="Статистика">
+                                       <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-code" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                               <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                               <path d="M6 21v-2a4 4 0 0 1 4 -4h3.5"></path>
+                                               <path d="M20 21l2 -2l-2 -2"></path>
+                                               <path d="M17 17l-2 2l2 2"></path>
+                                            </svg>
+                                       </span>
+                                        <span class="nav-link-title">Статистика</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+        <button id="hide-btn" class="hide-btn" title="Скрыть панель">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <polyline points="15 6 9 12 15 18" />
+            </svg>
+        </button>
+    </div>
+</aside>
