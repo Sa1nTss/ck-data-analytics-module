@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Education;
-use App\Entity\Student;
 use App\Service\QueryHelperService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

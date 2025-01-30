@@ -50,7 +50,7 @@ function initAjaxForms() {
 function exelFormAlert() {
     let form = document.querySelector('.exel-form');
 
-    if (form) {
+    if (form && !form.classList.contains('no-alerts')) {
         form.addEventListener('submit', function () {
             alert('Началась обработка данных. Пожайлуйста не закрывайте страницу!');
         });

@@ -1,0 +1,36 @@
+<div class="users-table-wrap table-responsive">
+    <table class="table card-table">
+        <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Поток</th>
+            <th>Ассесмент</th>
+            <th>Программа</th>
+            <th>Направление</th>
+            <th>Компетенция</th>
+            <th>Результат</th>
+            <th>Итоговый уровень развития компетенции</th>
+        </tr>
+
+        </thead>
+        <tbody>
+        {% if data|default(false) %}
+            {% for item in data %}
+                <tr>
+                    <td>{{ item.student.fio }}</td>
+                    <td>{{ item.flow }}</td>
+                    <td>{{ item.stage }}</td>
+                    <td>{{ item.program.name }}</td>
+                    <td>{{ item.direction.name }}</td>
+                    <td>{{ item.competence.name }}</td>
+                    <td>{{ item.result }}</td>
+                    <td>{{ item.competenceGrowLevel }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+<div class="card-footer d-flex align-items-center">
+    <p class="m-0 text-muted">Всего результатов: <b id="table_rows_number">{{ data|length }}</b></p>
+</div>

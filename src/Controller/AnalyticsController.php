@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Education;
+use App\Entity\Student;
 use App\Service\AuthService;
 use App\Service\LinkService;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class AnalyticsController extends BaseController
     use LinkService;
     public string $controller = 'analytics';
 
-    #[Route('/analytics', name: 'analytics')]
+    #[Route('/analytics/analytics', name: 'analytics')]
     public function index(): Response
     {
         $auth = $this->getAuthValue($this->getUser(), 'auth_main', $this->managerRegistry);
@@ -22,7 +23,7 @@ class AnalyticsController extends BaseController
             return $auth;
         }
 
-        $tpl = $this->request->get('ajax') ? 'analytics/table.html.twig' : 'analytics/index.html.twig';
+        $tpl = $this->request->get('ajax') ? 'analytics/analytics/table.html.twig' : 'analytics/analytics/index.html.twig';
         $result = $this->get();
         $result['auth'] = $auth;
 
@@ -46,7 +47,8 @@ class AnalyticsController extends BaseController
         $count = $this->doctrine->getRepository(Education::class)->getCount($filters);
 
         return [
-            'data' => $result,
+            'data' => [],
+            'students' => $this->doctrine->getRepository(Student::class)->findBy([], ['fio' => 'ASC']),
             'pager' => [
                 'count_all_position' => $count,
                 'current_page' => $filters['page'] ?? 1,
@@ -62,6 +64,20 @@ class AnalyticsController extends BaseController
             'controller' => $this->controller,
             'table' => $this->setTable(),
         ];
+    }
+
+    #[Route('/analytics/table_data', name: 'analytics_table_data')]
+    public function getAnalyticsTableData(): Response
+    {
+        $student = $this->request->get('student');
+
+        $data = $this->doctrine->getRepository(Education::class)->findBy([
+            'student' => $student,
+        ]);
+
+        return $this->render('analytics/part/table.html.twig', [
+            'data' => $data,
+        ]);
     }
 
     private function setTable(): array
@@ -139,5 +155,4 @@ class AnalyticsController extends BaseController
             ],*/
         ];
     }
-
 }
