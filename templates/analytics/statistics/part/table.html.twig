@@ -1,3 +1,163 @@
-<div class="users-table-wrap table-responsive">
+<div class="users-table-wrap table-responsive p-3">
+    <div class="d-none d-flex flex-row gap-4">
+        {% if data.universities|default(false) %}
+            <div class="d-flex flex-column gap-2 flex-grow-1">
+                <h2>ВУЗы</h2>
+                {% for university in data.universities %}
+                    <div class="d-flex flex-column gap-2 border-bottom">
+                        <div class="strong">{{ university.name }}</div>
+                        <div class="d-flex gap-2">
+                            {% if university.studentCompleteAssessment|default(false) %}
+                                {% for stage in university.studentCompleteAssessment %}
+                                    {% include 'analytics/statistics/part/assessment_data.html.twig' with {
+                                        'stage': data.stage ? data.stage : loop.index,
+                                        'stage_length': stage|length,
+                                        'students_length': university.student|length,
+                                    } %}
+                                {% endfor %}
+                            {% else %}
+                                {% include 'analytics/statistics/part/assessment_data.html.twig' with {
+                                    'stage': data.stage ? data.stage : loop.index,
+                                    'stage_length': 0,
+                                    'students_length': university.student|length,
+                                } %}
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div>
+                                Всего студентов
+                            </div>
+                            <div>
+                                {{ university.student|length }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
+
+        {% if data.faculties|default(false) %}
+            <div class="d-flex flex-column gap-2 flex-grow-1">
+                <h2>Факультеты</h2>
+                {% for faculty in data.faculties %}
+                    <div class="d-flex flex-column gap-2 border-bottom">
+                        <div class="strong">{{ faculty.name }}</div>
+                        <div class="d-flex gap-2">
+                            {% if faculty.studentCompleteAssessment|default(false) %}
+                                {% for stage in faculty.studentCompleteAssessment %}
+                                    {% include 'analytics/statistics/part/assessment_data.html.twig' with {
+                                        'stage': data.stage ? data.stage : loop.index,
+                                        'stage_length': stage|length,
+                                        'students_length': faculty.student|length,
+                                    } %}
+                                {% endfor %}
+                            {% else %}
+                                {% include 'analytics/statistics/part/assessment_data.html.twig' with {
+                                    'stage': data.stage ? data.stage : loop.index,
+                                    'stage_length': 0,
+                                    'students_length': faculty.student|length,
+                                } %}
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div>
+                                Всего студентов
+                            </div>
+                            <div>
+                                {{ faculty.student|length }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="">
+        <table class="users-table table">
+            {% if data.universities|default(false) %}
+            <thead>
+            <tr>
+                <th>ВУЗ</th>
+                <th>Студентов прошло ассесмент</th>
+                <th>Прогресс</th>
+                <th>%</th>
+                <th>Всего студентов</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for university in data.universities %}
+                {% set students_length = university.student|length %}
+                    {% if university.studentCompleteAssessment|default(false) %}
+                        {% for stage in university.studentCompleteAssessment %}
+                            {% set stage_length = stage|length %}
+                            <tr>
+                                {% if loop.index == 1 %}
+                                    <td rowspan="{{ university.studentCompleteAssessment|length }}">{{ university.name }}</td>
+                                {% endif %}
+                            <td>{{ stage_length }}</td>
+                            <td>{{ students_length - stage_length }}</td>
+                            <td>{{ (stage_length / students_length)|round(2) * 100 }}</td>
+                                {% if loop.index == 1 %}
+                                    <td rowspan="{{ university.studentCompleteAssessment|length }}">{{ students_length }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>{{ university.name }}</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>{{ students_length }}</td>
+                        </tr>
+                    {% endif %}
+
+            {% endfor %}
+            </tbody>
+            {% endif %}
+
+            {% if data.faculties|default(false) %}
+                <thead>
+                <tr>
+                    <th rowspan="2">Факультет</th>
+                    <th>Студентов прошло ассесмент</th>
+                    <th>Прогресс</th>
+                    <th>%</th>
+                    <th rowspan="2">Всего студентов</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for faculty in data.faculties %}
+                    {% set students_length = faculty.student|length %}
+                    {% if faculty.studentCompleteAssessment|default(false) %}
+                        {% for stage in faculty.studentCompleteAssessment %}
+                            {% set stage_length = stage|length %}
+                            <tr>
+                                {% if loop.index == 1 %}
+                                    <td rowspan="{{ faculty.studentCompleteAssessment|length }}">{{ faculty.name }}</td>
+                                {% endif %}
+                                <td>{{ stage_length }}</td>
+                                <td>{{ students_length - stage_length }}</td>
+                                <td>{{ (stage_length / students_length)|round(2) * 100 }}</td>
+                                {% if loop.index == 1 %}
+                                    <td rowspan="{{ faculty.studentCompleteAssessment|length }}">{{ students_length }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>{{ faculty.name }}</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>{{ students_length }}</td>
+                        </tr>
+                    {% endif %}
+
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        </table>
+    </div>
 </div>

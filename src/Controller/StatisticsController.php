@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Education;
 use App\Entity\Faculty;
 use App\Entity\University;
 use App\Service\AuthService;
@@ -60,7 +59,11 @@ class StatisticsController extends BaseController
             ->getStatisticData($faculty, $dateStart, $dateEnd, $flow, $stage);
 
         return $this->render('analytics/statistics/part/table.html.twig', [
-            'data' => [],
+            'data' => [
+                'stage' => $stage,
+                'universities' => $universityStatistic,
+                'faculties' => $facultyStatistic,
+            ],
         ]);
     }
 }

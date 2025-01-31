@@ -1,0 +1,28 @@
+<div class="d-flex flex-column gap-2">
+    <div class="d-flex flex-column">
+        <div>
+            Этап ассесмента: {{ stage }}
+        </div>
+        <div class="d-flex">
+            {{ stage_length }}
+        </div>
+    </div>
+
+    <div class="d-flex flex-column">
+        <div>
+            Прогресс
+        </div>
+        <div class="d-flex">
+            {{ students_length - stage_length }}
+        </div>
+    </div>
+
+    <div class="d-flex flex-column">
+        <div>
+            Прогресс %
+        </div>
+        <div class="d-flex">
+            {{ (stage_length / students_length)|round(2) }}
+        </div>
+    </div>
+</div>
