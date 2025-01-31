@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Faculty;
+use App\Enum\EducationThreshold;
+use App\Service\QueryHelperService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,33 +18,92 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FacultyRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private string $prefix = 'faculty';
+    public function __construct(ManagerRegistry $registry, private readonly QueryHelperService $queryHelperService)
     {
         parent::__construct($registry, Faculty::class);
     }
 
-//    /**
-//     * @return Faculty[] Returns an array of Faculty objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function add(Faculty $entity, bool $flush = false): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 
-//    public function findOneBySomeField($value): ?Faculty
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function remove(Faculty $entity, bool $flush = false): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+    public function getStatisticData($faculty, $dateStart, $dateEnd, $flow, $stage): array
+    {
+        if (empty($faculty)) {
+            return [];
+        }
+        $ids = explode(',', $faculty);
+
+        $qb = $this->createQueryBuilder($this->prefix)
+            ->leftJoin($this->prefix.'.student', 'student', 'WITH', $this->prefix.'.id = student.faculty and student.status = \'Активен\'')->addSelect('student')
+            ->leftJoin('student.education', 'education')->addSelect('education')
+            ->where($this->prefix.'.id IN (:ids)')
+            ->setParameters([
+                'ids' => $ids,
+            ]);
+
+        if ($stage) {
+            $qb->andWhere('education.stage = :stage')
+                ->setParameter('stage', $stage);
+        }
+        if ($flow) {
+            $qb->andWhere('education.flow = :flow')
+                ->setParameter('flow', $flow);
+        }
+
+        $result = $qb->getQuery()->getArrayResult();
+
+        foreach ($result as $key => $item) {
+            $studentsCompleteAssessment = [];
+            foreach ($item['student'] as $key2 => $student) {
+                $grouperData = []; // Группируем данные по этапам ассесмента
+                foreach ($student['education'] as $education) {
+                    $stage = $education['stage'];
+                    if (!isset($grouperData[$stage])) {
+                        $grouperData[$stage] = [];
+                    }
+                    $grouperData[$stage][] = $education;
+                }
+
+                $medians = [];
+                foreach ($grouperData as $stage) {
+                    $stageResult = []; // Считаем медианы каждой группы ассесмента
+                    foreach ($stage as $education) {
+                        if ('-' == $education['result']) {
+                            $stageResult[] = 0;
+                        } else {
+                            $stageResult[] = (float) $education['result'];
+                        }
+                    }
+                    $medians[] = $this->queryHelperService->findMedian($stageResult);
+                }
+
+                foreach ($medians as $stage => $median) {
+                    if ($median < EducationThreshold::MINIMUM->asFloat()) {
+                        $result[$key]['student'][$key2]['assessment_result'][$stage] = false;
+                    } else {
+                        $result[$key]['student'][$key2]['assessment_result'][$stage] = true;
+                        $studentsCompleteAssessment[$stage][] = 1;
+                    }
+                }
+                $result[$key]['student'][$key2]['education'] = $grouperData;
+            }
+            $result[$key]['studentCompleteAssessment'] = $studentsCompleteAssessment;
+        }
+
+        return $result;
+    }
 }

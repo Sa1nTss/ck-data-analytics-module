@@ -75,7 +75,7 @@ class AnalyticsController extends BaseController
             'student' => $student,
         ]);
 
-        return $this->render('analytics/part/table.html.twig', [
+        return $this->render('analytics/analytics/part/table.html.twig', [
             'data' => $data,
         ]);
     }

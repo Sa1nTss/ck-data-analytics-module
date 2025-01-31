@@ -157,4 +157,19 @@ class QueryHelperService
 
         return true;
     }
+
+    public function findMedian(array $numbers): float
+    {
+        sort($numbers); // Сортируем массив
+        $count = count($numbers);
+        $middle = floor($count / 2);
+
+        if (0 === $count % 2) {
+            // Если количество элементов четное, берем среднее двух центральных значений
+            return ($numbers[$middle - 1] + $numbers[$middle]) / 2;
+        } else {
+            // Если количество элементов нечетное, берем центральное значение
+            return $numbers[$middle];
+        }
+    }
 }
