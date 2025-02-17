@@ -71,7 +71,7 @@ class AnalyticsController extends BaseController
     {
         $student = $this->request->get('student');
 
-        $data = $this->doctrine->getRepository(Student::class)->getEducationData($student);
+        $data = $this->doctrine->getRepository(Student::class)->getEducationData($student);dump($data);
 
         return $this->render('analytics/analytics/part/table.html.twig', [
             'data' => $data,

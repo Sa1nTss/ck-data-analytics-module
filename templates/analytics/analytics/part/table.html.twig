@@ -16,16 +16,20 @@
         <tbody>
         {% if data|default(false) %}
             {% for item in data %}
-                <tr>
-                    <td>{{ item.fio }}</td>
-                    <td>{{ item.flow }}</td>
-                    <td>{{ item.stage }}</td>
-                    <td>{{ item.program.name }}</td>
-                    <td>{{ item.direction.name }}</td>
-                    <td>{{ item.competence.name }}</td>
-                    <td>{{ item.result }}</td>
-                    <td>{{ item.competenceGrowLevel }}</td>
-                </tr>
+                {% if item.education|default(false) %}
+                    {% for education in item.education %}
+                        <tr>
+                            <td>{{ item.fio }}</td>
+                            <td>{{ education.flow }}</td>
+                            <td>{{ education.stage }}</td>
+                            <td>{{ education.program.name }}</td>
+                            <td>{{ education.direction.name }}</td>
+                            <td>{{ education.competence.name }}</td>
+                            <td>{{ education.result }}</td>
+                            <td>{{ education.competence_grow_level }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         {% endif %}
         </tbody>

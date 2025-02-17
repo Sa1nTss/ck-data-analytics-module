@@ -45,6 +45,9 @@ class StudentRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder($this->prefix)
             ->leftJoin($this->prefix.'.education', 'education')->addSelect('education')
+            ->leftJoin('education.program', 'program')->addSelect('program')
+            ->leftJoin('education.competence', 'competence')->addSelect('competence')
+            ->leftJoin('education.direction', 'direction')->addSelect('direction')
             ->where('student = :student')
             ->setParameter('student', $student);
 
