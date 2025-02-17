@@ -17,7 +17,7 @@
         {% if data|default(false) %}
             {% for item in data %}
                 <tr>
-                    <td>{{ item.student.fio }}</td>
+                    <td>{{ item.fio }}</td>
                     <td>{{ item.flow }}</td>
                     <td>{{ item.stage }}</td>
                     <td>{{ item.program.name }}</td>
